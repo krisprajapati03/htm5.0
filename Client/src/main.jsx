@@ -7,6 +7,7 @@ import Home from './components/Home/Home.jsx'
 import Interview from './components/interview/interview.jsx'
 import Login from './components/Login/login.jsx'
 import Options from './components/Options/Options.jsx'
+import Feedback from './components/FeedackOnExam/Feedback.jsx'
 
 const router =  createBrowserRouter(
   createRoutesFromElements(
@@ -15,6 +16,7 @@ const router =  createBrowserRouter(
       <Route path="selectoptions" element={<Options />}/>
       <Route path="interview" element={<Interview />}/>
       <Route path="login" element={<Login />}/>
+      <Route path="feedback" element={<Feedback />}/>
     </Route>
   )
 )
