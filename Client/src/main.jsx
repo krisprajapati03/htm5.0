@@ -4,11 +4,17 @@ import './index.css'
 import {createBrowserRouter, createRoutesFromElements, Route, Router, RouterProvider} from 'react-router-dom'
 import Layout from './Layout.jsx'
 import Home from './components/Home/Home.jsx'
+import Interview from './components/interview/interview.jsx'
+import Login from './components/Login/login.jsx'
+import Options from './components/Options/Options.jsx'
 
 const router =  createBrowserRouter(
   createRoutesFromElements(
     <Route path="/" element={<Layout />}>
       <Route path="" element={<Home />}/>
+      <Route path="selectoptions" element={<Options />}/>
+      <Route path="interview" element={<Interview />}/>
+      <Route path="login" element={<Login />}/>
     </Route>
   )
 )
