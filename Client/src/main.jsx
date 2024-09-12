@@ -1,11 +1,11 @@
 import { StrictMode } from 'react'
 import { createRoot } from 'react-dom/client'
 import './index.css'
-import {createBrowserRouter, createRoutesFromElements, Route, Router, RouterProvider} from 'react-router-dom'
+import {createBrowserRouter, createRoutesFromElements, Route, RouterProvider} from 'react-router-dom'
 import Layout from './Layout.jsx'
 import Home from './components/Home/Home.jsx'
 import Interview from './components/interview/interview.jsx'
-import Login from './components/Login/login.jsx'
+import Login from './components/Login/Login.jsx'
 import Options from './components/Options/Options.jsx'
 import Feedback from './components/FeedackOnExam/Feedback.jsx'
 
