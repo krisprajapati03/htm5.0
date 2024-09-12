@@ -8,7 +8,7 @@ function Login() {
     };
 
     return (
-        <div className="flex items-center justify-center min-h-screen bg-black">
+        <div className="flex items-center justify-center min-h-screen bg-gray-950">
             <div className="relative w-3/4 max-w-4xl h-96 bg-white shadow-lg rounded-lg overflow-hidden">
                 <div className={`absolute inset-0 w-full h-full transform ${isSignUp ? 'translate-x-full' : ''} transition-transform duration-500`}>
                     <div className="w-1/2 float-left h-full flex flex-col justify-center items-center bg-gray-900 text-white p-8">

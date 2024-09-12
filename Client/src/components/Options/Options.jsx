@@ -12,7 +12,7 @@ function Options() {
   };
 
   return (
-    <div className="flex items-center justify-center min-h-screen bg-gray-100">
+    <div className="flex items-center justify-center min-h-screen bg-gray-950">
       <form className="w-1/2 bg-white shadow-md rounded-lg p-8" onSubmit={handleSubmit}>
         <h2 className="text-2xl font-bold mb-6">Start Your Interview</h2>
         
@@ -21,7 +21,7 @@ function Options() {
           <label className="block mb-2 font-semibold">Select Topic</label>
           <select 
             className="w-full p-2 border rounded" 
-            value={topic} 
+            value={topic} ce32
             onChange={(e) => setTopic(e.target.value)}
           >
             <option value="Data Structures">Data Structures</option>

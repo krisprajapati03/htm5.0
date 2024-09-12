@@ -102,7 +102,7 @@ const ChatPage = () => {
   };
 
   return (
-    <div className="flex justify-center bg-black min-h-screen items-start p-6">
+    <div className="flex justify-center bg-gray-950 min-h-screen items-start p-6">
       {/* Answer Feed Section */}
       <div className="w-1/2 bg-stone-300 shadow-md rounded-lg p-4">
         <h2 className="text-xl font-semibold mb-4">Answer Feed</h2>

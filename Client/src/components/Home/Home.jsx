@@ -2,7 +2,7 @@ import React from 'react';
 
 function Home() {
   return (
-    <div className='bg-white w-full'>
+    <div className='bg-gray-950 w-full'>
       <section className='flex-grow h-screen  hero-section flex justify-between items-center p-8'>
         <div className='photo-section'>
           <img src='your-photo-url.jpg' alt='Hero' className='w-1/2 h-auto' />
