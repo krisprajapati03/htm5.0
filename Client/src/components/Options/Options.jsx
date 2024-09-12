@@ -13,12 +13,12 @@ function Options() {
 
   return (
     <div className="flex items-center justify-center min-h-screen bg-gray-950">
-      <form className="w-1/2 bg-white shadow-md rounded-lg p-8" onSubmit={handleSubmit}>
+      <form className="w-1/2 bg-gray-400 shadow-md rounded-lg p-8" onSubmit={handleSubmit}>
         <h2 className="text-2xl font-bold mb-6">Start Your Interview</h2>
-        
         {/* Topic Selection */}
         <div className="mb-4">
           <label className="block mb-2 font-semibold">Select Topic</label>
+          
           <select 
             className="w-full p-2 border rounded" 
             value={topic} ce32
@@ -59,7 +59,7 @@ function Options() {
         </div>
 
         {/* Submit Button */}
-        <button type="submit" className="w-full p-2 bg-blue-500 text-white rounded">
+        <button type="submit" className="w-full p-2 bg-gray-800 text-white rounded">
           Start Interview
         </button>
       </form>

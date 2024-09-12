@@ -104,7 +104,7 @@ const ChatPage = () => {
   return (
     <div className="flex justify-center bg-gray-950 min-h-screen items-start p-6">
       {/* Answer Feed Section */}
-      <div className="w-1/2 bg-stone-300 shadow-md rounded-lg p-4">
+      <div className="w-1/2 bg-gray-400 shadow-md rounded-lg p-4">
         <h2 className="text-xl font-semibold mb-4">Answer Feed</h2>
         <div className="space-y-4">
           {questions.map((q) => (
@@ -141,7 +141,7 @@ const ChatPage = () => {
 
         <div className="mt-4">
           <button
-            className="bg-blue-500 text-white rounded-lg px-4 py-2 w-full"
+            className="bg-gray-800 text-white rounded-lg px-4 py-2 w-full"
             onClick={submitAllAnswers}
           >
             Submit All Answers
