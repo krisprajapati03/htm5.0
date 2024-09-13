@@ -20,6 +20,7 @@ router.post('/exam/generate', authentication, examController.generateQuestion);
 router.post('/exam/genrateFeedback', authentication, examController.generateFeedback);
 router.post('/exam/store', authentication, examController.storeExam);
 router.get('/exam/getexams', authentication, examController.getExamByUser);
+router.get('/exam/getexam/:id', authentication, examController.getExamById);
 
 
 module.exports = router;

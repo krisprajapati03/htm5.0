@@ -42,9 +42,9 @@ exports.storeExam = async (req, res) => {
                 number: item.number,
                 answer: item.answer,
             })),
-            area_of_improment: data.feedback_of_questions.map(item => ({
+            area_of_improvement: data.feedback_of_questions.map(item => ({
                 number: item.number,
-                area_of_improment: item.area_of_improvement,
+                area_of_improvement: item.area_of_improvement,
             })),
             result: {
                 totalMarks: totalMarks,
@@ -67,6 +67,16 @@ exports.getExamByUser = async (req, res) => {
     try {
         const exams = await Exam.find({ user: userId });
         res.status(200).json(exams);
+    } catch (e) {
+        res.status(500).json({ message: e.message });
+    }
+}
+
+exports.getExamById = async (req, res) => {
+    const { id } = req.params;
+    try {
+        const exam = await Exam.findById(id);
+        res.status(200).json(exam);
     } catch (e) {
         res.status(500).json({ message: e.message });
     }
