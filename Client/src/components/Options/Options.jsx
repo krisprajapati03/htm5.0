@@ -1,12 +1,12 @@
-import React, { useState } from 'react';
-import axios from 'axios'; // Import axios for making API requests
-import { useNavigate } from 'react-router-dom'; // Use this hook to navigate to a new page
+import { useState } from 'react';
+import axios from 'axios';
+import { useNavigate } from 'react-router-dom';
 
 function Options() {
-  const [topic, setTopic] = useState('Data Structures');
+  const [topic, setTopic] = useState('Data Structures & Algorithms');
   const [level, setLevel] = useState('Beginner');
   const [numberOfQuestions, setNumberOfQuestions] = useState(5);
-  const navigate = useNavigate(); // Initialize navigate
+  const navigate = useNavigate();
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -15,9 +15,8 @@ function Options() {
     const token = localStorage.getItem('token');
 
     try {
-      // Make a POST request to fetch interview questions with Authorization header
       const response = await axios.post(
-        'http://127.0.0.1:3000/v1//exam/generate',
+        'http://127.0.0.1:3000/v1/exam/generate',
         {
           topic,
           level,
@@ -53,15 +52,26 @@ function Options() {
             value={topic}
             onChange={(e) => setTopic(e.target.value)}
           >
-            <option value="Data Structures">Data Structures</option>
-            <option value="Algorithms">Algorithms</option>
+            <option value="Data Structures & Algorithms">Data Structures & Algorithms</option>
             <option value="System Design">System Design</option>
-            <option value="Behavioral">Behavioral</option>
+            <option value="Object Oriented Programming">Object Oriented Programming</option>
+            <option value="Database Management">Database Management</option>
+            <option value="Operating Systems">Operating Systems</option>
+            <option value="Networking">Networking</option>
+            <option value="Software Engineering">Software Engineering</option>
+            <option value="Web Development">Web Development</option>
+            <option value="Backend Development">Backend Development</option>
+            <option value="Frontend Development">Frontend Development</option>
+            <option value="Full Stack Development">Full Stack Development</option>
+            <option value="DevOps">DevOps</option>
+            <option value="Data Science">Data Science</option>
+            <option value="Machine Learning">Machine Learning</option>
+            <option value="Artificial Intelligence">Artificial Intelligence</option>
           </select>
         </div>
 
-        {/* Level Selection */}
-        <div className="mb-4">
+           {/* Level Selection */}
+           <div className="mb-4">
           <label className="block mb-2 font-semibold">Select Level</label>
           <select 
             className="w-full p-2 border rounded" 
@@ -75,12 +85,12 @@ function Options() {
         </div>
 
         {/* Number of Questions */}
-        <div className="mb-4">
+        <div className="mb-4" id='numberOfQuestions'>
           <label className="block mb-2 font-semibold">Number of Questions</label>
-          <input 
+          <input
             type="number" 
-            min="1" 
-            max="20" 
+            min="5" 
+            max="15" 
             className="w-full p-2 border rounded" 
             value={numberOfQuestions} 
             onChange={(e) => setNumberOfQuestions(e.target.value)}

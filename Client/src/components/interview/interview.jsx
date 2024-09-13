@@ -7,17 +7,20 @@ const ChatPage = () => {
   const location = useLocation(); // Access the current location
   const [questions, setQuestions] = useState([{
     question: '',
-    answer: '' // Initialize answerFeed instead of answer
+    answer: '' // Initialize answer
   }]);
   const navigate = useNavigate(); // Initialize navigate
 
   // Initialize questions state from location state
   useEffect(() => {
-    if (location.state && location.state.questions) {
+    // Check if location.state and location.state.questions exist and are arrays
+    if (location.state && Array.isArray(location.state.questions)) {
       setQuestions(location.state.questions.map(question => ({
         ...question,
-        answer: '' // Ensure answerFeed is included and defaults to an empty string
+        answer: '' // Ensure answer is included and defaults to an empty string
       })));
+    } else {
+      console.warn("Questions data is missing or not in correct format.");
     }
   }, [location.state]);
 
@@ -45,7 +48,7 @@ const ChatPage = () => {
   
       // Check if the feedback generation was successful
       if (response.status === 200) {
-        console.log('Feedback Generated:', response.data); // Use JSON.stringify to see the full object
+        console.log('Feedback Generated:', response.data);
   
         // Make another request to store the feedback
         const feedbackResponse = await axios.post(
@@ -76,8 +79,6 @@ const ChatPage = () => {
       alert('An error occurred while submitting feedback');
     }
   };
-  
-  
 
   return (
     <div className="flex justify-center bg-gray-950 min-h-screen items-start p-6">
