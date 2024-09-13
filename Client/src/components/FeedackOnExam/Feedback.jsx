@@ -4,37 +4,32 @@ const Feedback = () => {
   const location = useLocation();
   const resultData = location.state?.feedback || {};
 
-  // Destructure the data safely
+  // Destructure and validate the data safely
   const feedbackOfQuestions = Array.isArray(resultData?.questions) ? resultData.questions : [];
   const answers = Array.isArray(resultData?.answers) ? resultData.answers : [];
-  const areaOfImprovement = Array.isArray(resultData?.area_of_improvement) ? resultData.area_of_improvement : [];
-  const result = resultData?.result || {};
+  const areaOfImprovement = Array.isArray(resultData?.area_of_improment) ? resultData.area_of_improment : [];
+
 
   // Create lookup maps for answers and areas of improvement
   const answerMap = answers.reduce((map, item) => {
-    map[item.number] = item.answer;
+    map[item.number] = item.answer || 'No answer provided';
     return map;
   }, {});
 
   const improvementMap = areaOfImprovement.reduce((map, item) => {
-    map[item.number] = item.area_of_improvement;
+    map[item.number] = item.area_of_improvement || 'No improvement area provided';
     return map;
   }, {});
 
+console.log(areaOfImprovement);
+
   return (
     <div className="container mx-auto p-6">
-      <h1 className="text-2xl font-bold mb-4">{result.name || 'Interview Feedback'}</h1>
+      <h1 className="text-2xl font-bold mb-4">{resultData.name}</h1>
 
       <div className="bg-white shadow-md rounded-lg p-4 mb-6">
-        <h2 className="text-xl font-semibold mb-4">Interview Result</h2>
-        <p className="mb-2"><strong>Total Questions:</strong> {result.totalQuestions}</p>
-        <p className="mb-2"><strong>Correct Answers:</strong> {result.correctAnswers}</p>
-        <p className="mb-2"><strong>Accuracy:</strong> {result.accuracy}%</p>
-        <p className={`mb-2 ${result.status === 'Fail' ? 'text-red-500' : 'text-green-500'}`}>
-          <strong>Status:</strong> {result.status}
-        </p>
         <p className="mt-4 text-lg font-semibold">Overall Feedback</p>
-        <p>{result.overallFeedback || 'No feedback available'}</p>
+        <p>{resultData.result.overallFeedback || 'No feedback available'}</p>
       </div>
 
       <div className="bg-white shadow-md rounded-lg p-4">
@@ -45,7 +40,7 @@ const Feedback = () => {
               Question {question.number}: {question.question || 'No question provided'}
             </h3>
             <p className="mb-2">
-              <strong>Your Answer:</strong> {answerMap[question.number] || 'No answer provided'}
+              <strong>Your Answer:</strong> {answerMap[question.number]}
             </p>
             <p className="text-gray-600">
               <strong>Suggested Improvement:</strong> {improvementMap[question.number]}
