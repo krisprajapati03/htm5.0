@@ -5,7 +5,7 @@ const bcrypt = require('bcryptjs');
 
 exports.signup = async (req, res) => {
   try {
-      const {firstName, lastName, username, email, password} = req.body;
+      const {firstName, lastName, userName, email, password} = req.body;
 
       const existingUser = await User.findOne({ $or: [{ email }, { userName }] });
       if (existingUser) {
@@ -19,7 +19,7 @@ exports.signup = async (req, res) => {
       // Create a new user
       const newUser = new User({
           email,
-          username,
+          username: userName,
           password: hashedPassword,
           profile: {
               firstName: firstName,
