@@ -1,14 +1,44 @@
 import React, { useState } from 'react';
+import axios from 'axios'; // Import axios for making API requests
+import { useNavigate } from 'react-router-dom'; // Use this hook to navigate to a new page
 
 function Options() {
   const [topic, setTopic] = useState('Data Structures');
   const [level, setLevel] = useState('Beginner');
   const [numberOfQuestions, setNumberOfQuestions] = useState(5);
+  const navigate = useNavigate(); // Initialize navigate
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    // Pass selected options to the parent component or backend
-    
+
+    // Retrieve the token from localStorage or another secure location
+    const token = localStorage.getItem('token');
+
+    try {
+      // Make a POST request to fetch interview questions with Authorization header
+      const response = await axios.post(
+        'http://127.0.0.1:3000/v1//exam/generate',
+        {
+          topic,
+          level,
+          numberOfQuestions,
+        },
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      );
+
+      // Handle the response data as needed
+      const questions = response.data;
+      console.log('Fetched Questions:', questions);
+
+      // Redirect to the interview page and pass the fetched questions as state
+      navigate('/interview', { state: { questions } });
+    } catch (error) {
+      console.error('Error fetching questions:', error);
+    }
   };
 
   return (
@@ -18,10 +48,9 @@ function Options() {
         {/* Topic Selection */}
         <div className="mb-4">
           <label className="block mb-2 font-semibold">Select Topic</label>
-          
           <select 
             className="w-full p-2 border rounded" 
-            value={topic} ce32
+            value={topic}
             onChange={(e) => setTopic(e.target.value)}
           >
             <option value="Data Structures">Data Structures</option>
@@ -59,7 +88,7 @@ function Options() {
         </div>
 
         {/* Submit Button */}
-        <button type="submit" className="w-full p-2 bg-gray-800 text-white rounded">
+        <button type="submit" onClick={handleSubmit} className="w-full p-2 bg-gray-800 text-white rounded">
           Start Interview
         </button>
       </form>

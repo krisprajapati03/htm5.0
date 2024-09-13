@@ -1,139 +1,100 @@
-import React, { useState, useEffect, useRef } from 'react';
-import axios from 'axios'; // Axios for sending data to backend
-import '@fortawesome/fontawesome-free/css/all.min.css'; // Import Font Awesome for icons
+import { useState, useEffect } from 'react';
+import { useLocation } from 'react-router-dom';
+import axios from 'axios';
+import { useNavigate } from 'react-router-dom'; 
 
 const ChatPage = () => {
-  const [questions, setQuestions] = useState([
-    { id: 1, question: "What is React?", answerFeed: "" },
-    { id: 2, question: "What is Tailwind CSS?", answerFeed: "" },
-  ]);
-  const [isListening, setIsListening] = useState(null); // Track which question is listening
-  const [error, setError] = useState(''); // Handle any errors
-  const recognitionRef = useRef(null); // Store the recognition instance in a ref
+  const location = useLocation(); // Access the current location
+  const [questions, setQuestions] = useState([{
+    question: '',
+    answer: '' // Initialize answerFeed instead of answer
+  }]);
+  const navigate = useNavigate(); // Initialize navigate
 
-  // Initialize Speech Recognition if the browser supports it
-  const initializeSpeechRecognition = () => {
-    const SpeechRecognition =
-      window.SpeechRecognition || window.webkitSpeechRecognition;
-
-    if (SpeechRecognition) {
-      const recognition = new SpeechRecognition();
-      recognition.continuous = false; // Stop after each result
-      recognition.interimResults = true; // Enable real-time transcription
-      recognition.lang = 'en-US';
-
-      // When speech recognition receives a result
-      recognition.onresult = (event) => {
-        let transcript = '';
-        for (let i = event.resultIndex; i < event.results.length; i++) {
-          transcript += event.results[i][0].transcript;
-        }
-
-        console.log('Transcript received: ', transcript); // Debugging the transcript
-
-        // Use functional form of setQuestions to ensure state updates correctly
-        setQuestions((prevQuestions) => {
-          const updatedQuestions = prevQuestions.map((q) => {
-            if (q.id === isListening) {
-              console.log(`Updating question with id: ${q.id}, current answerFeed: ${q.answerFeed}, new transcript: ${transcript}`);
-              return { ...q, answerFeed: q.answerFeed + transcript }; // Append the transcript
-            }
-            return q;
-          });
-
-          console.log('Updated questions:', updatedQuestions); // Debugging updated state
-          return updatedQuestions;
-        });
-      };
-
-      // Handle errors during speech recognition
-      recognition.onerror = (event) => {
-        setError(`Error: ${event.error}`);
-        setIsListening(null);
-      };
-
-      // When recognition ends, reset listening state
-      recognition.onend = () => {
-        console.log('Recognition ended');
-        setIsListening(null);
-      };
-
-      recognitionRef.current = recognition; // Store recognition instance in ref
-    } else {
-      setError('Speech Recognition is not supported in this browser.');
-    }
-  };
-
-  console.log('Questions:', questions); // Debugging the questions state
-
+  // Initialize questions state from location state
   useEffect(() => {
-    initializeSpeechRecognition();
-  }, []);
-
-  // Start or stop listening for speech input
-  const toggleListening = (id) => {
-    if (recognitionRef.current) {
-      if (isListening === id) {
-        recognitionRef.current.stop(); // Stop recognition if already listening
-        setIsListening(null);
-        console.log(`Stopped listening for question id: ${id}`);
-      } else {
-        setError(''); // Clear any previous errors
-        recognitionRef.current.start(); // Start recognition if not listening
-        console.log(`Started listening for question id: ${id}`);
-        setIsListening(id); // Set the question id for which the speech recognition is active
-      }
+    if (location.state && location.state.questions) {
+      setQuestions(location.state.questions.map(question => ({
+        ...question,
+        answer: '' // Ensure answerFeed is included and defaults to an empty string
+      })));
     }
+  }, [location.state]);
+
+  // Handle input changes in the textarea
+  const handleAnswerChange = (number, value) => {
+    setQuestions(prevQuestions =>
+      prevQuestions.map(q =>
+        q.number === number ? { ...q, answer: value } : q
+      )
+    );
   };
 
-  // Handle submitting all answers to the backend
-  const submitAllAnswers = async () => {
-    const answeredQuestions = questions.filter((q) => q.answerFeed.trim() !== '');
-
-    if (answeredQuestions.length === 0) return;
-
+  const handleSubmit = async () => {
     try {
-      await axios.post('/api/answer', { answers: answeredQuestions });
-      alert('Answers submitted successfully');
+      // Make the first request to generate feedback
+      const response = await axios.post(
+        'http://127.0.0.1:3000/v1/exam/genrateFeedback', 
+        { data: questions }, 
+        {
+          headers: {
+            Authorization: `Bearer ${localStorage.getItem('token')}`,
+          },
+        }
+      );
+  
+      // Check if the feedback generation was successful
+      if (response.status === 200) {
+        console.log('Feedback Generated:', response.data); // Use JSON.stringify to see the full object
+  
+        // Make another request to store the feedback
+        const feedbackResponse = await axios.post(
+          'http://127.0.0.1:3000/v1/exam/store', 
+          { data: response.data },
+          {
+            headers: {
+              "Content-Type": "application/json",
+              Authorization: `Bearer ${localStorage.getItem('token')}`,
+            },
+          }
+        );
+  
+        // Check if storing feedback was successful
+        if (feedbackResponse.status === 201) {
+          console.log(feedbackResponse.data);
+          navigate('/feedback', { state: { feedback: feedbackResponse.data } });
+        } else {
+          console.error('Failed to store feedback:', feedbackResponse);
+          alert('Error storing feedback');
+        }
+      } else {
+        console.error('Failed to generate feedback:', response);
+        alert('Error generating feedback');
+      }
     } catch (error) {
-      console.error('Error submitting answers to backend:', error);
-      alert('Error submitting answers');
+      console.error('Error submitting feedback:', error);
+      alert('An error occurred while submitting feedback');
     }
   };
+  
+  
 
   return (
     <div className="flex justify-center bg-gray-950 min-h-screen items-start p-6">
-      {/* Answer Feed Section */}
       <div className="w-1/2 bg-gray-400 shadow-md rounded-lg p-4">
         <h2 className="text-xl font-semibold mb-4">Answer Feed</h2>
         <div className="space-y-4">
-          {questions.map((q) => (
-            <div key={q.id} className="border p-4 rounded-lg">
+          {questions.map(q => (
+            <div key={q.number} className="border p-4 rounded-lg">
               <h3 className="font-semibold mb-2">{q.question}</h3>
-              <div className="flex items-center space-x-2">
+              <div className="flex flex-col">
                 <textarea
                   className="border rounded-lg p-2 w-full mb-2"
                   rows="3"
-                  value={q.answerFeed} // Should reflect the updated state
-                  onChange={(e) =>
-                    setQuestions((prevQuestions) =>
-                      prevQuestions.map((ques) =>
-                        ques.id === q.id
-                          ? { ...ques, answerFeed: e.target.value }
-                          : ques
-                      )
-                    )
-                  }
-                  placeholder="Write your answer or use the mic..."
+                  value={q.answer}
+                  onChange={(e) => handleAnswerChange(q.number, e.target.value)}
+                  placeholder="Write your answer here..."
                 />
-                <button
-                  className={`${
-                    isListening === q.id ? 'bg-red-500' : 'bg-green-500'
-                  } text-white rounded-lg p-2`}
-                  onClick={() => toggleListening(q.id)}
-                >
-                  <i className="fas fa-microphone"></i>
-                </button>
               </div>
             </div>
           ))}
@@ -142,13 +103,11 @@ const ChatPage = () => {
         <div className="mt-4">
           <button
             className="bg-gray-800 text-white rounded-lg px-4 py-2 w-full"
-            onClick={submitAllAnswers}
+            onClick={handleSubmit}
           >
             Submit All Answers
           </button>
         </div>
-
-        {error && <p className="text-red-500 mt-2">{error}</p>}
       </div>
     </div>
   );
