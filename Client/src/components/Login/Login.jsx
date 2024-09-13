@@ -27,6 +27,9 @@ function Login() {
         try {
             const response = await axios.post('http://127.0.0.1:3000/v1/auth/signup', signUpData);
             console.log('Sign Up Successful:', response.data);
+            if (response.ok) {
+                window.location.href = '/login';
+            }
         } catch (error) {
             console.error('Sign Up Error:', error);
         }

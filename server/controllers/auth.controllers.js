@@ -5,9 +5,9 @@ const bcrypt = require('bcryptjs');
 
 exports.signup = async (req, res) => {
   try {
-      const { email, username, password, firstName, lastName } = req.body;
+      const {firstName, lastName, username, email, password} = req.body;
 
-      const existingUser = await User.findOne({ $or: [{ email }, { username }] });
+      const existingUser = await User.findOne({ $or: [{ email }, { userName }] });
       if (existingUser) {
           return res.status(400).json({ message: 'Email or Username already in use' });
       }

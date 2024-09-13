@@ -15,7 +15,7 @@ export default function Header() {
             </ul>
           </nav>
           <div className="flex space-x-4">
-            <Link to="/signin" className="text-gray-200 items-center flex hover:text-slate-300">Sign In</Link>
+            <Link to="/login" className="text-gray-200 items-center flex hover:text-slate-300">Sign In</Link>
             <Link to="/get-started" className="bg-purple-300 text-black px-4 py-2 rounded hover:bg-fuchsia-300">Get Started Free</Link>
           </div>
         </div>
