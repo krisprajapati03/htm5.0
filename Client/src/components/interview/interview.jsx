@@ -1,33 +1,34 @@
 import { useState, useEffect } from 'react';
 import { useLocation } from 'react-router-dom';
 import axios from 'axios';
-import { useNavigate } from 'react-router-dom'; 
+import { useNavigate } from 'react-router-dom';
 
 const ChatPage = () => {
-  const location = useLocation(); // Access the current location
-  const [questions, setQuestions] = useState([{
-    question: '',
-    answer: '' // Initialize answer
-  }]);
-  const navigate = useNavigate(); // Initialize navigate
+  const location = useLocation();
+  const [questions, setQuestions] = useState([
+    {
+      question: '',
+      answer: '',
+    },
+  ]);
+  const navigate = useNavigate();
 
-  // Initialize questions state from location state
   useEffect(() => {
-    // Check if location.state and location.state.questions exist and are arrays
     if (location.state && Array.isArray(location.state.questions)) {
-      setQuestions(location.state.questions.map(question => ({
-        ...question,
-        answer: '' // Ensure answer is included and defaults to an empty string
-      })));
+      setQuestions(
+        location.state.questions.map((question) => ({
+          ...question,
+          answer: '',
+        }))
+      );
     } else {
-      console.warn("Questions data is missing or not in correct format.");
+      console.warn('Questions data is missing or not in correct format.');
     }
   }, [location.state]);
 
-  // Handle input changes in the textarea
   const handleAnswerChange = (number, value) => {
-    setQuestions(prevQuestions =>
-      prevQuestions.map(q =>
+    setQuestions((prevQuestions) =>
+      prevQuestions.map((q) =>
         q.number === number ? { ...q, answer: value } : q
       )
     );
@@ -35,37 +36,33 @@ const ChatPage = () => {
 
   const handleSubmit = async () => {
     try {
-      // Make the first request to generate feedback
       const response = await axios.post(
-        'http://127.0.0.1:3000/v1/exam/genrateFeedback', 
-        { data: questions }, 
+        'http://127.0.0.1:3000/v1/exam/genrateFeedback',
+        { data: questions },
         {
           headers: {
             Authorization: `Bearer ${localStorage.getItem('token')}`,
           },
         }
       );
-  
-      // Check if the feedback generation was successful
+
       if (response.status === 200) {
         console.log('Feedback Generated:', response.data);
-  
-        // Make another request to store the feedback
+
         const feedbackResponse = await axios.post(
-          'http://127.0.0.1:3000/v1/exam/store', 
+          'http://127.0.0.1:3000/v1/exam/store',
           { data: response.data },
           {
             headers: {
-              "Content-Type": "application/json",
+              'Content-Type': 'application/json',
               Authorization: `Bearer ${localStorage.getItem('token')}`,
             },
           }
         );
-  
-        // Check if storing feedback was successful
+
         if (feedbackResponse.status === 201) {
           console.log(feedbackResponse.data);
-          navigate('/feedback', { state: { feedback: feedbackResponse.data } });
+          navigate(`/feedback/${feedbackResponse.data._id}`);
         } else {
           console.error('Failed to store feedback:', feedbackResponse);
           alert('Error storing feedback');
@@ -81,29 +78,29 @@ const ChatPage = () => {
   };
 
   return (
-    <div className="flex justify-center bg-gray-950 min-h-screen items-start p-6">
-      <div className="w-1/2 bg-gray-400 shadow-md rounded-lg p-4">
-        <h2 className="text-xl font-semibold mb-4">Answer Feed</h2>
-        <div className="space-y-4">
-          {questions.map(q => (
-            <div key={q.number} className="border p-4 rounded-lg">
-              <h3 className="font-semibold mb-2">{q.question}</h3>
-              <div className="flex flex-col">
-                <textarea
-                  className="border rounded-lg p-2 w-full mb-2"
-                  rows="3"
-                  value={q.answer}
-                  onChange={(e) => handleAnswerChange(q.number, e.target.value)}
-                  placeholder="Write your answer here..."
-                />
-              </div>
+    <div className="flex justify-center bg-gray-900 min-h-screen items-start p-8">
+      <div className="w-full max-w-2xl bg-gray-800 shadow-lg rounded-lg p-6">
+        <h2 className="text-2xl font-bold text-white mb-6">Interview Section</h2>
+        <div className="space-y-6">
+          {questions.map((q) => (
+            <div key={q.number} className="bg-gray-700 p-4 rounded-lg">
+              <h3 className="text-lg font-semibold text-violet-300 mb-2">
+                {q.question}
+              </h3>
+              <textarea
+                className="border border-gray-600 bg-gray-800 rounded-lg p-2 w-full text-white placeholder-gray-500 focus:outline-none focus:border-purple-400 mb-2"
+                rows="4"
+                value={q.answer}
+                onChange={(e) => handleAnswerChange(q.number, e.target.value)}
+                placeholder="Write your answer here..."
+              />
             </div>
           ))}
         </div>
 
-        <div className="mt-4">
+        <div className="mt-6">
           <button
-            className="bg-gray-800 text-white rounded-lg px-4 py-2 w-full"
+            className="bg-violet-400 hover:bg-violet-500 text-white font-semibold rounded-lg px-6 py-3 w-full transition-colors duration-300"
             onClick={handleSubmit}
           >
             Submit All Answers

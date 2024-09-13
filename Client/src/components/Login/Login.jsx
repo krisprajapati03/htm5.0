@@ -17,7 +17,7 @@ function Login() {
             console.log('Sign In Successful:', response.data);
             localStorage.setItem('token', response.data.token);
             // Handle successful sign-in, like redirecting or switching to dashboard
-            window.location.href = '/selectoptions';
+            window.location.href = '/';
         } catch (error) {
             console.error('Sign In Error:', error);
         }

@@ -17,7 +17,7 @@ const ExamSchema = mongoose.Schema({
         type: Array,
         required: true
     },
-    area_of_improment: {
+    area_of_improvement: { // Corrected field name
         type: Array,
         required: true
     },

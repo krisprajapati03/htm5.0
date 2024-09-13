@@ -1,6 +1,18 @@
 import React from 'react';
 
 const InterviewPrep = () => {
+
+  const handleTry = () => {
+    const token = localStorage.getItem('token');
+    if (!token) {
+      // Redirect to login page
+      window.location.href = '/login';
+    } else {
+      // Redirect to interview page
+      window.location.href = '/selectoptions';
+    }
+  };
+
   return (
     <div className="min-h-screen w-full bg-gray-950 shadow-md rounded- p-8">
         {/* Left Section */}
@@ -16,7 +28,7 @@ const InterviewPrep = () => {
             <p className="text-gray-700 text-center mb-16 mt-4">
               Practice job interview questions tailored to your job description. Get instant AI feedback and suggestions to improve your answers.
             </p>
-            <button className="mt-6 bg-blue-600 text-white px-6 py-3 rounded-full font-semibold hover:bg-blue-700 transition duration-300">
+            <button onClick={handleTry} className="mt-6 bg-blue-600 text-white px-6 py-3 rounded-full font-semibold hover:bg-blue-700 transition duration-300">
               Try now for free &rarr;
             </button>
             <p className="text-sm text-gray-500 mt-2">No credit card needed</p>

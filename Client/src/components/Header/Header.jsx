@@ -1,7 +1,21 @@
-import React from 'react';
-import { Link } from 'react-router-dom';
+import React, { useEffect, useState } from 'react';
+import { Link, useNavigate } from 'react-router-dom';
 
 export default function Header() {
+  const [isLoggedIn, setIsLoggedIn] = useState(false);
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    const token = localStorage.getItem('token');
+    setIsLoggedIn(!!token); // Convert token to a boolean
+  }, []);
+
+  const handleLogout = () => {
+    localStorage.removeItem('token');
+    setIsLoggedIn(false);
+    navigate('/');
+  };
+
   return (
     <header className="bg-slate-950 p-4 pb-0">
       <div className="container mx-auto">
@@ -15,11 +29,21 @@ export default function Header() {
             </ul>
           </nav>
           <div className="flex space-x-4">
-            <Link to="/login" className="text-gray-200 items-center flex hover:text-slate-300">Sign In</Link>
+            {isLoggedIn ? (
+              <button 
+                onClick={handleLogout} 
+                className="text-gray-200 items-center flex hover:text-slate-300"
+              >
+                Sign Out
+              </button>
+            ) : (
+              <Link to="/login" className="text-gray-200 items-center flex hover:text-slate-300">
+                Sign In
+              </Link>
+            )}
             <Link to="/get-started" className="bg-purple-300 text-black px-4 py-2 rounded hover:bg-fuchsia-300">Get Started Free</Link>
           </div>
         </div>
-        {/* Move the hr tag inside the container, after the content */}
         <hr className="h-px bg-gray-200 border-0 dark:bg-gray-700 mt-4" />
       </div>
     </header>
