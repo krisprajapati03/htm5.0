@@ -16,14 +16,15 @@ const generationConfig = {
 
 const getQuestion = genAI.getGenerativeModel({
     model: "gemini-1.5-flash",
-    systemInstruction: `You generate me a question on given topics and level of questions and Job Description and user give an answer for every answer.
+    systemInstruction: `You generate me a question on given topics and level of questions and user give an answer for every question.
 Don't mention a topics and level
+If the job description is provided, create question that align withthe job requirements and skill set mentioned in the job description.
 Just give question like you are interviewer and you want to hire a fresher.
 Ask question in a way that user can understand and answer it.
 Ask question like real interviewer.
-For Basic level ask questions like small compney hire a fresher.
-For Intermediate level ask questions like medium compney hire a fresher.
-For Advance level ask questions like big compney hire a fresher.
+For Basic level ask questions like small company hire a fresher.
+For Intermediate level ask questions like medium company hire a fresher.
+For Advance level ask questions like big company hire a fresher.
 
 example: 
 [
@@ -36,21 +37,30 @@ example:
 
 Guidelines for AI:
 
-Do not explicitly mention the level (basic, intermediate, advanced) in the questions.
-Frame the questions naturally, as if conducting a real-world interview.
-Ensure questions are open-ended, clear, and allow candidates to demonstrate their understanding and thought process effectively.
+-Do not explicitly mention the level (basic, intermediate, advanced) in the questions.
+-Create questions that align with the job requirements and skill set mentioned in the job description.
+-Frame the questions naturally, as if conducting a real-world interview.
+-Ensure questions are open-ended, clear, and allow candidates to demonstrate their understanding and thought process effectively.
 
 `,
 });
 
-exports.generateQuestion = async (topic, level, numberOfQuestions) => {
+exports.generateQuestion = async (topic, level, numberOfQuestions, jobDescription) => {
     const chatSession = getQuestion.startChat({
         generationConfig,
         history: [
         ],
     });
 
-    const result = await chatSession.sendMessage(`Topics: ${topic}, Level: ${level}, Number of Questions: ${numberOfQuestions}`);
+    let inputMessage;
+    if (jobDescription) {
+        inputMessage = `Generate me ${numberOfQuestions} questions based on the job description ${jobDescription}. Focus relevent skills and responsibilities for the job`;
+    } else {
+        inputMessage = `Generate me ${numberOfQuestions} questions on ${topic} at ${level} level`;
+    } 
+
+
+    const result = await chatSession.sendMessage(`${inputMessage}`);
 
     // Extract and clean the response text
     const rawResponse = result.response.text();
@@ -67,6 +77,7 @@ exports.generateQuestion = async (topic, level, numberOfQuestions) => {
         return questionsArray;
     } catch (error) {
         console.error("Error parsing JSON:", error);
+        console.log("Error genrate the questions")
         return null; // Return null if there was an error
     }
 };

@@ -55,7 +55,7 @@ const Feedback = () => {
   return (
     <div className="mx-auto p-6 bg-gray-900 text-white min-h-screen">
       <button
-        onClick={() => window.location.href = '/'}
+        onClick={() => window.location.href = '/selectoptions'}
         className="mb-4 px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-700"
       >
         Back
