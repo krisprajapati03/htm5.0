@@ -11,6 +11,8 @@ import Feedback from './components/FeedackOnExam/Feedback.jsx'
 import PublicRoute from './utils/PublicRoutes.jsx'
 import ProtectedRoute from './utils/ProtectedRoutes.jsx'
 import Error from './components/404/Error.jsx'
+import About from './components/About/About.jsx'
+import ContactUs from './components/contactus/contactus.jsx'
 
 const router =  createBrowserRouter(
   createRoutesFromElements(
@@ -18,6 +20,8 @@ const router =  createBrowserRouter(
       <Route path="" element={<Home />}/>
       <Route element={<PublicRoute redirectPath="/" />}>
         <Route path="login" element={<Login />} />
+        <Route path="about" element={<About/>} />
+        <Route path="contactus" element={<ContactUs/>} />
       </Route>
       <Route path="protected" element={<ProtectedRoute />}/>
         <Route path="selectoptions" element={<Options />}/>

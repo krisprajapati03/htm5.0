@@ -15,12 +15,12 @@ const Footer = () => {
       <footer className="bg-slate-950 text-white p-4 flex justify-between items-center">
         <div className="text-purple-300">
           {/* <img src="" alt="TalentCraft Logo" className="h-8" /> */}
-          <h1 className="text-2xl p-8 font-bold">TalentCraft</h1>
+          <h1 className="text-2xl p-8 font-bold">TalentCraft.AI</h1>
         </div>
         <div className="text-right">
           <p>Made by CodeX-0.3</p>
           <p>Contact us: <a href="mailto:info@talentcraft.com" className="text-purple-300">info@talentcraft.com</a></p>
-          <p onClick={handleNavigate} className="cursor-pointer">© 2023 TalentCraft. All rights reserved.</p>
+          <p onClick={handleNavigate} className="cursor-pointer">© 2024 TalentCraft.AI All rights reserved.</p>
         </div>
       </footer>
     </>

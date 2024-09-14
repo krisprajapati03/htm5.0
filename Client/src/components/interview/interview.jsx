@@ -34,7 +34,7 @@ const ChatPage = () => {
     );
   };
 
-  const handleSubmit = async () => {
+  const handleSubmit = async (attempt = 1, maxAttempts = 3) => {
     try {
       const response = await axios.post(
         'http://127.0.0.1:3000/v1/exam/genrateFeedback',
@@ -45,10 +45,11 @@ const ChatPage = () => {
           },
         }
       );
-
+  
       if (response.status === 200) {
         console.log('Feedback Generated:', response.data);
-
+  
+        // Second request to store feedback
         const feedbackResponse = await axios.post(
           'http://127.0.0.1:3000/v1/exam/store',
           { data: response.data },
@@ -59,23 +60,29 @@ const ChatPage = () => {
             },
           }
         );
-
+  
         if (feedbackResponse.status === 201) {
           console.log(feedbackResponse.data);
           navigate(`/feedback/${feedbackResponse.data._id}`);
         } else {
-          console.error('Failed to store feedback:', feedbackResponse);
-          alert('Error storing feedback');
+          throw new Error('Failed to store feedback');
         }
       } else {
-        console.error('Failed to generate feedback:', response);
-        alert('Error generating feedback');
+        throw new Error('Failed to generate feedback');
       }
     } catch (error) {
-      console.error('Error submitting feedback:', error);
-      alert('An error occurred while submitting feedback');
+      console.error(`Attempt ${attempt} - Error:`, error.message);
+  
+      // Retry logic
+      if (attempt < maxAttempts) {
+        console.log(`Retrying request (${attempt + 1}/${maxAttempts})...`);
+        await handleSubmit(attempt + 1, maxAttempts);
+      } else {
+        alert('An error occurred while submitting feedback after multiple attempts');
+      }
     }
   };
+  
 
   return (
     <div className="flex justify-center bg-gray-900 min-h-screen items-start p-8">
