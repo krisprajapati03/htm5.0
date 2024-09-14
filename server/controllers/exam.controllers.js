@@ -3,9 +3,15 @@ const Exam = require('../models/exam.models');
 const mongoose = require('mongoose');
 
 exports.generateQuestion = async (req, res) => {
+<<<<<<< HEAD
     const { topic, level, numberOfQuestions } = req.body;
     try {
         const questions = await generateQuestion(topic, level, numberOfQuestions);
+=======
+    const { topic, level, numberOfQuestions, jobDescription } = req.body;
+    try {
+        const questions = await generateQuestion(topic, level, numberOfQuestions, jobDescription);
+>>>>>>> 5ea28ab5d89e76c12f687b9c7b32dd55b505e0ca
         res.status(200).json(questions);
     } catch (e) {
         res.status(500).json({ message: e.message });
