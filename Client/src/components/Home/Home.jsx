@@ -25,21 +25,13 @@ const InterviewPrep = () => {
             <h1 className="text-4xl font-bold mt-4 text-white">
               Boost your confidence, <br /> ace the job interview
             </h1>
-            <p className="text-gray-700 text-center mb-16 mt-4">
+            <p className="text-gray-700 text-start mb-16 mt-4">
               Practice job interview questions tailored to your job description. Get instant AI feedback and suggestions to improve your answers.
             </p>
             <button onClick={handleTry} className="mt-6 bg-blue-600 text-white px-6 py-3 rounded-full font-semibold hover:bg-blue-700 transition duration-300">
               Try now for free &rarr;
             </button>
             <p className="text-sm text-gray-500 mt-2">No credit card needed</p>
-            <div className="flex mt-4 space-x-2 items-center">
-              <img src="https://randomuser.me/api/portraits/men/75.jpg" alt="User" className="w-8 h-8 rounded-full" />
-              <img src="https://randomuser.me/api/portraits/women/76.jpg" alt="User" className="w-8 h-8 rounded-full" />
-              <img src="https://randomuser.me/api/portraits/men/77.jpg" alt="User" className="w-8 h-8 rounded-full" />
-              <p className="text-sm text-gray-700 font-medium">
-                Trusted by 40,000+ job seekers
-              </p>
-            </div>
           </div>
 
           {/* Right Section */}

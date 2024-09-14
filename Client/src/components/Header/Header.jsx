@@ -20,7 +20,7 @@ export default function Header() {
     <header className="bg-slate-950 p-4 pb-0">
       <div className="container mx-auto">
         <div className="flex justify-between items-center">
-          <h1 className="text-purple-300 text-2xl font-bold">TalentCraft</h1>
+          <h1 className="text-purple-300 text-2xl font-bold"><Link Link to="/">TalentCraft</Link></h1>
           <nav>
             <ul className="flex space-x-4">
               <li><Link to="/" className="text-slate-300 hover:text-slate-100 hover:font-semibold">Home</Link></li>
@@ -32,16 +32,16 @@ export default function Header() {
             {isLoggedIn ? (
               <button 
                 onClick={handleLogout} 
-                className="text-gray-200 items-center flex hover:text-slate-300"
+                className="bg-purple-300 text-black px-4 py-2 rounded hover:bg-fuchsia-300"
               >
                 Sign Out
               </button>
             ) : (
-              <Link to="/login" className="text-gray-200 items-center flex hover:text-slate-300">
+              <Link to="/login" className="bg-purple-300 text-black px-4 py-2 rounded hover:bg-fuchsia-300">
                 Sign In
               </Link>
             )}
-            <Link to="/get-started" className="bg-purple-300 text-black px-4 py-2 rounded hover:bg-fuchsia-300">Get Started Free</Link>
+            {/* <Link to="/" className="bg-purple-300 text-black px-4 py-2 rounded hover:bg-fuchsia-300">Get Started Free</Link> */}
           </div>
         </div>
         <hr className="h-px bg-gray-200 border-0 dark:bg-gray-700 mt-4" />
