@@ -54,7 +54,7 @@ exports.generateQuestion = async (topic, level, numberOfQuestions, jobDescriptio
 
     let inputMessage;
     if (jobDescription) {
-        inputMessage = `Generate me ${numberOfQuestions} questions based on the job description: ${jobDescription}`;
+        inputMessage = `Generate me ${numberOfQuestions} questions based on the job description ${jobDescription}. Focus relevent skills and responsibilities for the job`;
     } else {
         inputMessage = `Generate me ${numberOfQuestions} questions on ${topic} at ${level} level`;
     } 
