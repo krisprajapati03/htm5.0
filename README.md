@@ -66,10 +66,10 @@ npm install
 5. To run Server
   ```bash
       npm start        
-
+```
 6. To run Client
   ```bash
       npm run dev       
-
+```
 
 
