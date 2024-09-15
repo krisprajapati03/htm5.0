@@ -34,6 +34,24 @@ const ChatPage = () => {
     );
   };
 
+  const handleSpeechRecognition = (number) => {
+    const recognition = new window.webkitSpeechRecognition();
+    recognition.continuous = false;
+    recognition.interimResults = false;
+    recognition.lang = 'en-US';
+
+    recognition.onresult = (event) => {
+      const transcript = event.results[0][0].transcript;
+      handleAnswerChange(number, transcript);
+    };
+
+    recognition.onerror = (event) => {
+      console.error('Speech recognition error', event.error);
+    };
+
+    recognition.start();
+  };
+
   const handleSubmit = async (attempt = 1, maxAttempts = 3) => {
     try {
       const response = await axios.post(
@@ -82,7 +100,6 @@ const ChatPage = () => {
       }
     }
   };
-  
 
   return (
     <div className="flex justify-center bg-gray-900 min-h-screen items-start p-8">
@@ -101,6 +118,12 @@ const ChatPage = () => {
                 onChange={(e) => handleAnswerChange(q.number, e.target.value)}
                 placeholder="Write your answer here..."
               />
+              <button
+                className="bg-violet-400 hover:bg-violet-500 text-white font-semibold rounded-lg px-4 py-2 mt-2"
+                onClick={() => handleSpeechRecognition(q.number)}
+              >
+                Use Mic
+              </button>
             </div>
           ))}
         </div>
