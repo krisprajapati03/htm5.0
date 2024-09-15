@@ -13,20 +13,22 @@ import ProtectedRoute from './utils/ProtectedRoutes.jsx'
 import Error from './components/404/Error.jsx'
 import About from './components/About/About.jsx'
 import ContactUs from './components/contactus/contactus.jsx'
+import ResumeBuilder from './components/ResumeBuilder/ResumeBuilder.jsx'
 
 const router =  createBrowserRouter(
   createRoutesFromElements(
     <Route path="/" element={<Layout />}>
       <Route path="" element={<Home />}/>
+      <Route path="about" element={<About/>} />
+      <Route path="contactus" element={<ContactUs/>} />
       <Route element={<PublicRoute redirectPath="/" />}>
         <Route path="login" element={<Login />} />
-        <Route path="about" element={<About/>} />
-        <Route path="contactus" element={<ContactUs/>} />
       </Route>
       <Route path="protected" element={<ProtectedRoute />}/>
         <Route path="selectoptions" element={<Options />}/>
         <Route path="interview" element={<Interview />}/>
         <Route path="feedback/:id" element={<Feedback />} />
+        <Route path="resumebuilder" element={<ResumeBuilder />} />
       <Route/>
       <Route path="*" element={<Error />} />
     </Route>

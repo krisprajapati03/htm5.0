@@ -31,11 +31,7 @@ const InterviewPrep = () => {
             <button onClick={handleTry} className="mt-6 bg-blue-600 text-white px-6 py-3 rounded-full font-semibold hover:bg-blue-700 transition duration-300">
               Try now for free &rarr;
             </button>
-<<<<<<< HEAD
             <p className="text-sm text-gray-500 ml-4 mt-2">No credit card needed</p>
-=======
-            <p className="text-sm text-gray-500 mt-2">No credit card needed</p>
->>>>>>> 5ea28ab5d89e76c12f687b9c7b32dd55b505e0ca
           </div>
 
           {/* Right Section */}

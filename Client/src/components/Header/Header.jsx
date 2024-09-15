@@ -20,11 +20,7 @@ export default function Header() {
     <header className="bg-slate-950 p-4 pb-0">
       <div className="container mx-auto">
         <div className="flex justify-between items-center">
-<<<<<<< HEAD
           <h1 className="text-purple-300 text-2xl font-bold"><Link Link to="/">TalentCraft.AI</Link></h1>
-=======
-          <h1 className="text-purple-300 text-2xl font-bold"><Link Link to="/">TalentCraft</Link></h1>
->>>>>>> 5ea28ab5d89e76c12f687b9c7b32dd55b505e0ca
           <nav>
             <ul className="flex space-x-4">
               <li><Link to="/" className="text-slate-300 hover:text-slate-100 hover:font-semibold">Home</Link></li>
